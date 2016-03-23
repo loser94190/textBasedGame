@@ -71,27 +71,43 @@ class Player:
 
         action_words = action.split(' ')
         if action_words[0] == 'attack':
-            try:
+            if action_words[1] == '1':
+                self.attack(self.location.enemies[0])
                 print('You attack the %s.' % action_words[1])
-                self.attack(action_words[1])
-            except:
-                print('You cannot attack that')
-            return True
+
+            if action_words[1] == '2':
+                self.attack(self.location.enemies[1])
+                print('You attack the %s.' % action_words[1])
+
+            if action_words[1] == '3':
+                self.attack(self.location.enemies[2])
+                print('You attack the %s.' % action_words[1])
+
+            if action_words[1] == '4':
+                self.attack(self.location.enemies[3])
+                print('You attack the %s.' % action_words[1])
+
+            else:
+                print('no')
+
+
+        return True
 
 
 
     def attack(self,enemy):
         while self.health > 0:
-            enemy.hp = enemy.hp - self.dmg
+            enemy.enemy_take_dmg(self.dmg)
             self.take_dmg(enemy.dmg)
-            if enemy <= 0:
-                print('You have killed a %s%s' %(enemy.name, enemy.surname))
+            if enemy.hp <= 0:
+                print('You have killed a %s %s' %(enemy.surname, enemy.name))
                 self.get_xp(enemy.give_xp())
                 self.check_lvl_up()
                 break
         if self.health <= 0:
-            print('The damned %s%s just killed you'%(enemy.name, enemy.surname))
+            print('The damned %s %s just killed you'%(enemy.surname, enemy.name))
             self.game_instance.shutdown()
+        self.location.check_enemies()
 
     def check_lvl_up(self):
         if self.xp >= self.lvl*10:

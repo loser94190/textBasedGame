@@ -28,6 +28,9 @@ class Enemy:
         self.xp = self.dmg*self.hp / 3
         self.surname = self.attributes[random.randint(0,4)]
 
+    def enemy_take_dmg(self, dmg):
+        self.hp -= dmg
+
     def give_xp(self):
         return self.xp
 
