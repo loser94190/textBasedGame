@@ -11,7 +11,7 @@ class Player:
         self.lvl = lvl
         self.max_health = int(lvl*5)
         self.health = self.max_health
-        self.dmg_mult = 0.2
+        self.dmg_mult = 11
         self.dmg = int(lvl*2*(1+self.dmg_mult))
         self.xp = 0
 
@@ -72,23 +72,24 @@ class Player:
         action_words = action.split(' ')
         if action_words[0] == 'attack':
             if action_words[1] == '1':
+                print('You attack the %s.' % self.location.enemies[0].name)
                 self.attack(self.location.enemies[0])
-                print('You attack the %s.' % action_words[1])
+                self.location.check_enemies()
 
             if action_words[1] == '2':
+                print('You attack the %s.' % self.location.enemies[1].name)
                 self.attack(self.location.enemies[1])
-                print('You attack the %s.' % action_words[1])
+                self.location.check_enemies()
 
             if action_words[1] == '3':
+                print('You attack the %s.' % self.location.enemies[2].name)
                 self.attack(self.location.enemies[2])
-                print('You attack the %s.' % action_words[1])
+                self.location.check_enemies()
 
             if action_words[1] == '4':
+                print('You attack the %s.' % self.location.enemies[3].name)
                 self.attack(self.location.enemies[3])
-                print('You attack the %s.' % action_words[1])
-
-            else:
-                print('no')
+                self.location.check_enemies()
 
 
         return True

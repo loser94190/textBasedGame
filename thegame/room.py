@@ -35,7 +35,7 @@ class Room:
         self.enemies = [Enemy(playername) for i in range(0, self.enemy_count)]
 
         self.description = random_flavour_a + ' ' + random_flavour_b + ' ' + random_flavour_c + '\n'
-
+        self.room_desc = self.description
         #   room description
         self.description += 'There are %d enemies here: ' % self.enemy_count
         for i in range(0, self.enemy_count):
@@ -49,6 +49,17 @@ class Room:
         for i in self.enemies:
             if i.hp <= 0:
                 self.enemies.remove(i)
+                self.description = self.room_desc
+                self.enemy_count -= 1
+                self.description += 'There are %d enemies here: ' % self.enemy_count
+                for i in range(0, self.enemy_count):
+                    self.check_enemies()
+                    self.description += self.enemies[i].explain()
+                    if i < self.enemy_count-1:
+                        self.description += ', '
+                self.description += '.'
+
+
 
     def explain(self):
         return self.description
