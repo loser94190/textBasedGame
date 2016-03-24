@@ -27,12 +27,14 @@ class Enemy:
         if random.randint(1,150) == random.randint(1,100):
             self.name = 'DEMON'
             self.surname = self.attributes[random.randint(2,4)]
-            self.hp = 500
+            self.max_hp = 500
+            self.hp = self.max_hp
             self.dmg = 40
             self.xp = 1000
         else:
             self.name = self.kinds[math.floor(random.random() * len(self.kinds))]
-            self.hp = random.randint(1, random.randint(1,55))
+            self.max_hp = random.randint(1, random.randint(1,55))
+            self.hp = self.max_hp
             self.dmg = random.randint(1, random.randint(1,35))
             self.xp = self.dmg*self.hp
             if self.hp > 5:

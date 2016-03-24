@@ -58,7 +58,6 @@ class Room:
                 self.enemy_count -= 1
                 self.description += 'There are %d enemies here: ' % self.enemy_count
                 for i in range(0, self.enemy_count):
-                    self.check_enemies()
                     self.description += self.enemies[i].explain()
                     if i < self.enemy_count-1:
                         self.description += ', '

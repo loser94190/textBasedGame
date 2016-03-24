@@ -7,6 +7,7 @@ class Game:
 
     def run(self):
         print('Welcome, %s!' % self.player.name)
+        self.player.help()
 
         while self.running:
             ret = self.take_input()

@@ -210,15 +210,16 @@ class Player:
 
     #prints commands used by the player
     def help(self):
+        print('\nHere are some of the commands you will use:')
+        print('-> explain         : you get general information about yourself and your surroundings')
         print('-> move            : you can move using a,s,w,d')
         print('-> attack #        : you can attack an enemy indicating it\'s possition')
         print('-> hit #           : similar to attack, but only hits one time')
         print('-> spendperk #perk : you can spend a perk, gaining hp or dmg(hp, dmg, dmg_mult)')
         print('-> clear           : clears the screen(console)')
         print('-> wait            : you wait a bit, gaining 1 hp')
-        print('-> explain         : you get general information about yourself and your surroundings')
         print('-> exit/quit       : you can quit the game')
-        print('-> help            : i guess you already know what it does')
+        print('-> help            : i guess you already know what it does\n')
 
     #similar to attack, but attack only once, not until someone dies
     #it hits the target for the player's dmg
@@ -253,6 +254,6 @@ class Player:
         elif self.kill_count == 1:
             text = text + '\nAnd you killed 1 enemy so far '
         text = text + '\nYou currently have %i perk points to spend.' %self.perks
-        text = text + '\nCurrent room:%s' %self.location.description
+        text = text + '\n%s' %self.location.description
         return text
 
