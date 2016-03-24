@@ -24,9 +24,9 @@ class Enemy:
 
     def __init__(self, player):
         self.name = self.kinds[math.floor(random.random() * len(self.kinds))]
-        self.hp = random.randint(1, player.get_dmg()*0.75)
+        self.hp = random.randint(1, 7)
         self.dmg = random.randint(1, 5)
-        self.xp = self.dmg*self.hp / 3
+        self.xp = self.dmg*self.hp
         self.surname = self.attributes[random.randint(0,4)]
 
     def enemy_take_dmg(self, dmg):

@@ -12,8 +12,8 @@ class Player:
         self.lvl = lvl
         self.max_health = int(lvl*5)
         self.health = self.max_health
-        self.dmg_mult = 11
-        self.dmg = int(lvl*2*(1+self.dmg_mult))
+        self.dmg_mult = 5
+        self.dmg = lvl*2*(1+self.dmg_mult)
         self.xp = 0
         self.waited = 0
         self.perks = 0
@@ -82,33 +82,41 @@ class Player:
 
         action_words = action.split(' ')
         if action_words[0] == 'attack':
-            if action_words[1] == '1':
-                print('You attack the %s.' % self.location.enemies[0].name)
-                self.attack(self.location.enemies[0])
-                self.location.check_enemies()
+            try:
+                if action_words[1] == '1':
+                    print('You attack the %s.' % self.location.enemies[0].name)
+                    self.attack(self.location.enemies[0])
+                    self.location.check_enemies()
+                    return True
 
-            if action_words[1] == '2':
-                print('You attack the %s.' % self.location.enemies[1].name)
-                self.attack(self.location.enemies[1])
-                self.location.check_enemies()
+                if action_words[1] == '2':
+                    print('You attack the %s.' % self.location.enemies[1].name)
+                    self.attack(self.location.enemies[1])
+                    self.location.check_enemies()
+                    return True
 
-            if action_words[1] == '3':
-                print('You attack the %s.' % self.location.enemies[2].name)
-                self.attack(self.location.enemies[2])
-                self.location.check_enemies()
+                if action_words[1] == '3':
+                    print('You attack the %s.' % self.location.enemies[2].name)
+                    self.attack(self.location.enemies[2])
+                    self.location.check_enemies()
+                    return True
 
-            if action_words[1] == '4':
-                print('You attack the %s.' % self.location.enemies[3].name)
-                self.attack(self.location.enemies[3])
-                self.location.check_enemies()
+                if action_words[1] == '4':
+                    print('You attack the %s.' % self.location.enemies[3].name)
+                    self.attack(self.location.enemies[3])
+                    self.location.check_enemies()
+                    return True
+            except:
+                print("Error")
 
         action_words = action.split(' ')
         if action_words[0] == 'spendperk':
             try:
-                self.spend_perks(action_words[2])
+                self.spend_perks(action_words[1])
+                return True
             except:
                 print("Error spending the perks")
-        return True
+                return False
 
 
 
@@ -134,14 +142,24 @@ class Player:
             self.perks += 1
             print('You just leveled up')
         else:
-            print('You need %i xp to level up' %(100-self.xp))
+            print('You need %i xp to level up' %(self.lvl*10-self.xp))
 
     def spend_perks(self, choice):
         if self.perks > 0:
             if choice == 'hp':
+                self.max_health += 5
                 self.health += 5
+                print('\n\nYou gained 5 health points(total)')
+                self.perks -= 1
             elif choice == 'dmg':
-                self.dmg += 1
+                self.dmg += 3
+                print('\n\nYou gained 3 dmg')
+                self.perks -= 1
+            elif choice == 'dmg_mult':
+                self.dmg_mult += 0.5
+                self.dmg = self.lvl*(1+self.dmg_mult)
+                print('\n\nYou gained 1 dmg multiplier')
+                self.perks -= 1
         else:
             print("You don't have any perk poits to spend")
 
