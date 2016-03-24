@@ -36,6 +36,7 @@ class Room:
 
         self.description = random_flavour_a + ' ' + random_flavour_b + ' ' + random_flavour_c + '\n'
         self.room_desc = self.description
+
         #   room description
         self.description += 'There are %d enemies here: ' % self.enemy_count
         for i in range(0, self.enemy_count):
@@ -45,6 +46,7 @@ class Room:
                 self.description += ', '
         self.description += '.'
 
+    #removes an enemy if he dies
     def check_enemies(self):
         for i in self.enemies:
             if i.hp <= 0:

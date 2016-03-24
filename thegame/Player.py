@@ -40,6 +40,9 @@ class Player:
 
 #used when taking inputs
     def act(self, action):
+        if action == 'help':
+            self.help()
+            return True
         if action == 'a':
             print('You move weastward.')
             self.move()
@@ -110,6 +113,35 @@ class Player:
                 print("Error")
 
         action_words = action.split(' ')
+        if action_words[0] == 'hit':
+            try:
+                if action_words[1] == '1':
+                    print('You attack the %s.' % self.location.enemies[0].name)
+                    self.hit(self.location.enemies[0])
+                    self.location.check_enemies()
+                    return True
+
+                if action_words[1] == '2':
+                    print('You attack the %s.' % self.location.enemies[1].name)
+                    self.hit(self.location.enemies[1])
+                    self.location.check_enemies()
+                    return True
+
+                if action_words[1] == '3':
+                    print('You attack the %s.' % self.location.enemies[2].name)
+                    self.hit(self.location.enemies[2])
+                    self.location.check_enemies()
+                    return True
+
+                if action_words[1] == '4':
+                    print('You attack the %s.' % self.location.enemies[3].name)
+                    self.hit(self.location.enemies[3])
+                    self.location.check_enemies()
+                    return True
+            except:
+                print("Error")
+
+        action_words = action.split(' ')
         if action_words[0] == 'spendperk':
             try:
                 self.spend_perks(action_words[1])
@@ -122,29 +154,32 @@ class Player:
 
     def attack(self,enemy):
         while self.health > 0:
-            enemy.enemy_take_dmg(self.dmg)
+            enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
             if enemy.hp > 0:
-                self.take_dmg(enemy.dmg)
+                self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
             if enemy.hp <= 0:
                 print('You have killed a %s %s' %(enemy.surname, enemy.name))
-                self.kill_count += 1
-                self.get_xp(enemy.give_xp())
-                self.check_lvl_up()
+                self.kill_count += 1            #counts the enemies killed
+                self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
+                self.check_lvl_up()             #check if the player has enough xp to lvl up
                 break
         if self.health <= 0:
             print('The damned %s %s just killed you'%(enemy.surname, enemy.name))
             self.game_instance.shutdown()
         self.location.check_enemies()
 
+    #used to check if the player need to level up
+    #it's called after gaining xp (killing enemies)
     def check_lvl_up(self):
         if self.xp >= self.lvl*10:
             self.lvl += 1
-            self.xp = 0
+            self.xp = 0     #this is a bit wrong
             self.perks += 1
             print('You just leveled up')
         else:
             print('You need %i xp to level up' %(self.lvl*10-self.xp))
 
+    #spends a perk and the player gains health/dmg/dmg_mult
     def spend_perks(self, choice):
         if self.perks > 0:
             if choice == 'hp':
@@ -164,10 +199,42 @@ class Player:
         else:
             print("You don't have any perk poits to spend")
 
+    #clear screen (console) function
     def clear_scr(self):
         clear = lambda: os.system('cls')
         clear()
 
+    #prints commands used by the player
+    def help(self):
+        print('-> move            : you can move using a,s,w,d')
+        print('-> attack #        : you can attack an enemy indicating it\'s possition')
+        print('-> hit #           : similar to attack, but only hits one time')
+        print('-> spendperk #perk : you can spend a perk, gaining hp or dmg(hp, dmg, dmg_mult)')
+        print('-> clear           : clears the screen(console)')
+        print('-> wait            : you wait a bit, gaining 1 hp')
+        print('-> explain         : you get general information about yourself and your surrounding')
+        print('-> exit/quit       : you can quit the game')
+        print('-> help            : i guess you already know what it does')
+
+    #similar to attack, but attack only once, not until someone dies
+    #it hits the target for the player's dmg
+    #the player gets hit for the target's dmg
+    def hit(self,enemy):
+        enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
+        if enemy.hp > 0:
+            self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
+        if enemy.hp <= 0:
+            print('You have killed a %s %s' %(enemy.surname, enemy.name))
+            self.kill_count += 1            #counts the enemies killed
+            self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
+            self.check_lvl_up()             #check if the player has enough xp to lvl up
+        if self.health <= 0:
+            print('The damned %s %s just killed you with just one hit'%(enemy.surname, enemy.name))
+            self.game_instance.shutdown()
+        self.location.check_enemies()
+
+    #Clear the screen and then returns a string with several
+    #things about the player and his current Room
     def explain(self):
         clear = lambda: os.system('cls')
         clear()
