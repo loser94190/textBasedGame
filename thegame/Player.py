@@ -123,7 +123,8 @@ class Player:
     def attack(self,enemy):
         while self.health > 0:
             enemy.enemy_take_dmg(self.dmg)
-            self.take_dmg(enemy.dmg)
+            if enemy.hp > 0:
+                self.take_dmg(enemy.dmg)
             if enemy.hp <= 0:
                 print('You have killed a %s %s' %(enemy.surname, enemy.name))
                 self.kill_count += 1
