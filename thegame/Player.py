@@ -1,5 +1,5 @@
 from .room import Room
-from .enemy import Enemy
+
 import os
 
 class Player:
@@ -7,7 +7,7 @@ class Player:
 
         self.game_instance = game_instance
         self.name = name
-        self.location = Room(self.name)
+        self.location = Room(self)
 
         self.lvl = lvl
         self.max_health = int(lvl*5)
@@ -18,10 +18,10 @@ class Player:
         self.waited = 0
         self.perks = 0
         self.kill_count = 0
-        self.stats = 10
+
 #3 get functions
     def get_dmg(self):
-        return self.dmg
+        return self.dmg_mult
 
     def get_max_hp(self):
         return self.max_health
@@ -165,3 +165,4 @@ class Player:
         text = text + '\nYou currently have %i perk points to spend.' %self.perks
         text = text + '\nCurrent room:%s' %self.location.description
         return text
+

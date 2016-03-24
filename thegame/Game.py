@@ -3,7 +3,6 @@ from .Player import Player
 class Game:
     def __init__(self, player_name):
         self.player = Player(player_name,1, self)
-        self.areas = dict()
         self.running = True
 
     def run(self):

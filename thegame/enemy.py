@@ -1,3 +1,4 @@
+
 import math
 import random
 
@@ -21,9 +22,9 @@ class Enemy:
     ]
 
 
-    def __init__(self, player_stats):
+    def __init__(self, player):
         self.name = self.kinds[math.floor(random.random() * len(self.kinds))]
-        self.hp = random.randint(1, 11)
+        self.hp = random.randint(1, player.get_dmg()*0.75)
         self.dmg = random.randint(1, 5)
         self.xp = self.dmg*self.hp / 3
         self.surname = self.attributes[random.randint(0,4)]
