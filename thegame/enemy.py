@@ -24,10 +24,15 @@ class Enemy:
     #needs work, should depend on the player stats
     def __init__(self, player):
         self.name = self.kinds[math.floor(random.random() * len(self.kinds))]
-        self.hp = random.randint(1, 7)
-        self.dmg = random.randint(1, 5)
+        self.hp = random.randint(1, random.randint(1,20))
+        self.dmg = random.randint(1, random.randint(1,20))
         self.xp = self.dmg*self.hp
-        self.surname = self.attributes[random.randint(0,4)]
+        if self.hp > 5:
+            self.surname = self.attributes[0]
+        elif self.hp > 6:
+            self.surname = self.attributes[1]
+        else:
+            self.surname = self.attributes[random.randint(2,4)]
 
     #used for attack/hit
     def enemy_take_dmg(self, dmg):

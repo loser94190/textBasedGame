@@ -212,7 +212,7 @@ class Player:
         print('-> spendperk #perk : you can spend a perk, gaining hp or dmg(hp, dmg, dmg_mult)')
         print('-> clear           : clears the screen(console)')
         print('-> wait            : you wait a bit, gaining 1 hp')
-        print('-> explain         : you get general information about yourself and your surrounding')
+        print('-> explain         : you get general information about yourself and your surroundings')
         print('-> exit/quit       : you can quit the game')
         print('-> help            : i guess you already know what it does')
 
