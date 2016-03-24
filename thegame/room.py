@@ -33,8 +33,8 @@ class Room:
         #   Enemy generation
         self.enemy_count = math.floor(random.random() * 4) + 1
         self.enemies = [Enemy(playername) for i in range(0, self.enemy_count)]
-        for i in range(0, self.enemy_count):
-            if "DEMON" in self.enemies[i].name:
+        for i in range(0, self.enemy_count):    #here we check if there was a demon spawned
+            if "DEMON" in self.enemies[i].name: #if thats the case, he will be the only enemy
                 self.enemy_count = 1
 
         self.description = random_flavour_a + ' ' + random_flavour_b + ' ' + random_flavour_c + '\n'

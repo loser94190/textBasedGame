@@ -2,19 +2,26 @@ from .room import Room
 
 import os
 
+##########################################
+#Problems:                               #
+#   When you level up, the xp is always 0#
+#   Some attack errors                   #
+#                                        #
+##########################################
+
 class Player:
     def __init__(self, name, lvl, game_instance): #constructor
 
         self.game_instance = game_instance
         self.name = name
-        self.location = Room(self)
+        self.location = Room(self)                 #set the current location as a Room
 
-        self.lvl = lvl
-        self.max_health = int(lvl*5)
-        self.health = self.max_health
-        self.dmg_mult = 0.5
+        self.lvl = lvl                              #it's not default 1 for testing purposes
+        self.max_health = int(lvl*5)                #it's an int, for some reason
+        self.health = self.max_health               #health changes value, max_health always stays the same
+        self.dmg_mult = 0.5                         #some weird thing i thought of
         self.dmg = lvl*2*(1+self.dmg_mult)
-        self.xp = 0
+        self.xp = 0                                 #xp starts from 0
         self.waited = 0
         self.perks = 0
         self.kill_count = 0
@@ -85,8 +92,8 @@ class Player:
 
         action_words = action.split(' ')
         if action_words[0] == 'attack':
-            try:
-                if action_words[1] == '1':
+            try:                            #for some reason, sometimes we get an error
+                if action_words[1] == '1':  #but it doesn't do anything
                     print('You attack the %s.' % self.location.enemies[0].name)
                     self.attack(self.location.enemies[0])
                     self.location.check_enemies()
@@ -142,7 +149,7 @@ class Player:
                 print("Error")
 
         action_words = action.split(' ')
-        if action_words[0] == 'spendperk':
+        if action_words[0] == 'spendperk':  #here we split the spendperk #something
             try:
                 self.spend_perks(action_words[1])
                 return True
@@ -151,7 +158,8 @@ class Player:
                 return False
 
 
-
+    #   this is used to attack an enemy and keep on doing that
+    #   until either the player or the enemy is dead
     def attack(self,enemy):
         while self.health > 0:
             enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
