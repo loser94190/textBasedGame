@@ -12,7 +12,7 @@ class Player:
         self.lvl = lvl
         self.max_health = int(lvl*5)
         self.health = self.max_health
-        self.dmg_mult = 5
+        self.dmg_mult = 0.5
         self.dmg = lvl*2*(1+self.dmg_mult)
         self.xp = 0
         self.waited = 0
@@ -158,7 +158,11 @@ class Player:
             if enemy.hp > 0:
                 self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
             if enemy.hp <= 0:
-                print('You have killed a %s %s' %(enemy.surname, enemy.name))
+                if enemy.name == 'DEMON':
+                    print('Congrats, you just killed a DEMON, you gain 3 dmg')
+                    self.dmg += 3
+                else:
+                    print('You have killed a %s %s' %(enemy.surname, enemy.name))
                 self.kill_count += 1            #counts the enemies killed
                 self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
                 self.check_lvl_up()             #check if the player has enough xp to lvl up
