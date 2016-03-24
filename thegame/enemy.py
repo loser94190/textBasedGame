@@ -21,10 +21,10 @@ class Enemy:
     ]
 
 
-    def __init__(self, playername):
+    def __init__(self, player_stats):
         self.name = self.kinds[math.floor(random.random() * len(self.kinds))]
-        self.hp = random.randint(1,20)
-        self.dmg = random.randint(1,5)
+        self.hp = random.randint(1, 11)
+        self.dmg = random.randint(1, 5)
         self.xp = self.dmg*self.hp / 3
         self.surname = self.attributes[random.randint(0,4)]
 
@@ -37,4 +37,5 @@ class Enemy:
     def explain(self):
         text = 'A %s' %self.surname
         text = text + ' %s' %self.name
+        text = text + '(%i dmg, %i hp) '%(self.dmg, self.hp)
         return text
