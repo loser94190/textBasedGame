@@ -4,6 +4,8 @@ import pickle
 import sys
 
 def logo():
+    clear = lambda: os.system('cls')
+    clear()
     print('___________                                          ')
     print('\__    ___/__.__.______   ____   ____   ____   ____  ')
     print('  |    | <   |  |\____ \_/ __ \ / ___\_/ __ \ /    \ ')

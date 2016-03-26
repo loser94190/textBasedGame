@@ -236,6 +236,7 @@ class Player:
         print('-> clear           : clears the screen(console)')
         print('-> wait            : you wait a bit, gaining 1 hp')
         print('-> exit/quit       : you can quit the game')
+        print('-> save            : saves your current game (only 1 game can be saved)')
         print('-> help            : i guess you already know what it does\n')
 
     #similar to attack, but attack only once, not until someone dies
@@ -243,7 +244,7 @@ class Player:
     #the player gets hit for the target's dmg
     def hit(self,enemy):
         enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
-        if enemy.hp > 0:
+        if enemy.hp > 0 and enemy.dmg<7:
             self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
         if enemy.hp <= 0:
             print('You have killed a %s %s' %(enemy.surname, enemy.name))
