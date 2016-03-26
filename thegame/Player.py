@@ -1,6 +1,7 @@
 from .room import Room
 
 import os
+import pickle
 
 ##########################################
 #Problems:                               #
@@ -47,9 +48,18 @@ class Player:
 
 #used when taking inputs
     def act(self, action):
+        if action == 'save':
+            self.save()
+            return True
+
+        if action == 'load':
+            self.load()
+            return True
+
         if action == 'help':
             self.help()
             return True
+
         if action == 'a':
             print('You move weastward.')
             self.move()
@@ -208,6 +218,8 @@ class Player:
                 self.dmg = self.lvl*(1+self.dmg_mult)
                 print('\n\nYou gained 1 dmg multiplier')
                 self.perks -= 1
+            else:
+                return False
         else:
             print("You don't have any perk poits to spend")
 
@@ -265,3 +277,12 @@ class Player:
         text = text + '\n%s' %self.location.description
         return text
 
+    def save(self):
+        outFile = open('saves.txt', 'wb')
+        pickle.dump(self,outFile)
+        outFile.close()
+
+    def load(self):
+        inFile = open('saves.txt', 'rb')
+        self = pickle.load(inFile)
+        inFile.close()

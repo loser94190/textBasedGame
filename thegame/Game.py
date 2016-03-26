@@ -1,4 +1,5 @@
 from .Player import Player
+import os
 
 class Game:
     def __init__(self, player_name):
@@ -19,3 +20,4 @@ class Game:
 
     def shutdown(self):
         self.running = False
+
