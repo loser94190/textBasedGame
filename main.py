@@ -14,13 +14,12 @@ def logo():
 def menu():
     inp = 0
     logo()
-    inp = input()
-    if inp:
-        clear = lambda: os.system('cls')
-        clear()
-        print('1.New game')
-        print('2.Load')
-        print('3.Exit')
+    input()
+    clear = lambda: os.system('cls')
+    clear()
+    print('1.New game')
+    print('2.Load')
+    print('3.Exit')
 
 if __name__ == '__main__':
     menu()
@@ -32,10 +31,9 @@ if __name__ == '__main__':
         G = Game(player_name)
         G.run()
     elif choice == '2':
-        G = Game('a')
-        inFile = open('saves.txt', 'rb')
-        G.player = pickle.load(inFile)
-        inFile.close()
+        gameinFile = open('game_saves.txt', 'rb')
+        G = pickle.load(gameinFile)
+        gameinFile.close()
         G.run()
     elif choice == '3':
         G = Game('a')

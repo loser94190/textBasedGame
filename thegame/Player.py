@@ -2,6 +2,7 @@ from .room import Room
 
 import os
 import pickle
+import sys
 
 ##########################################
 #Problems:                               #
@@ -49,12 +50,8 @@ class Player:
 #used when taking inputs
     def act(self, action):
         if action == 'save':
-            self.save()
-            return True
-
-        if action == 'load':
-            self.load()
-            return True
+            print('Your game has been saved')
+            return 'Save'
 
         if action == 'help':
             self.help()
@@ -276,13 +273,3 @@ class Player:
         text = text + '\nYou currently have %i perk points to spend.' %self.perks
         text = text + '\n%s' %self.location.description
         return text
-
-    def save(self):
-        outFile = open('saves.txt', 'wb')
-        pickle.dump(self,outFile)
-        outFile.close()
-
-    def load(self):
-        inFile = open('saves.txt', 'rb')
-        self = pickle.load(inFile)
-        inFile.close()

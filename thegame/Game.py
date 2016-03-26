@@ -1,5 +1,5 @@
 from .Player import Player
-import os
+import pickle
 
 class Game:
     def __init__(self, player_name):
@@ -12,6 +12,9 @@ class Game:
 
         while self.running:
             ret = self.take_input()
+
+            if ret == 'Save':
+                self.save()
             if not ret:
                 print('I didn\'t understand that.')
 
@@ -21,3 +24,7 @@ class Game:
     def shutdown(self):
         self.running = False
 
+    def save(self):
+        outFile = open('game_saves.txt', 'wb')
+        pickle.dump(self,outFile)
+        outFile.close()
