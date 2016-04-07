@@ -23,7 +23,7 @@ class Room:
         'You step into a puddle.',
         'It\'s quite cold.' ]
 
-    def __init__(self, playername):
+    def __init__(self, playerlvl):
 
         #   room generation
         random_flavour_a = self.flavour_a[math.floor(random.random() * len(self.flavour_a))]
@@ -32,7 +32,7 @@ class Room:
 
         #   Enemy generation
         self.enemy_count = math.floor(random.random() * 4) + 1
-        self.enemies = [Enemy(playername) for i in range(0, self.enemy_count)]
+        self.enemies = [Enemy(playerlvl) for i in range(0, self.enemy_count)]
         for i in range(0, self.enemy_count):    #here we check if there was a demon spawned
             if "DEMON" in self.enemies[i].name: #if thats the case, he will be the only enemy
                 self.enemy_count = 1

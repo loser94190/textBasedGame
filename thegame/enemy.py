@@ -24,7 +24,7 @@ class Enemy:
 
     #needs work, should depend on the player stats
     def __init__(self, player):
-        if random.randint(1,150) == random.randint(1,100):  #we have a very small chance to get an ennemy DEMON
+        if player > 50 and random.randint(1, 15) == random.randint(1, 10):  #we have a very small chance to get an ennemy DEMON
             self.name = 'DEMON'                             #ge isn't generated at random (only the surname)
             self.surname = self.attributes[random.randint(2,4)]
             self.max_hp = 500
@@ -33,13 +33,13 @@ class Enemy:
             self.xp = 1000
         else:
             self.name = self.kinds[math.floor(random.random() * len(self.kinds))]   #randomly get a name from kinds
-            self.max_hp = random.randint(1, random.randint(1,55))                   #get a random hp between 1 and
-            self.hp = self.max_hp                                                   #a random nr
-            self.dmg = random.randint(1, random.randint(1,35))                      #just like the hp
+            self.max_hp = random.randint(1, random.randint(1,5*player))
+            self.hp = self.max_hp
+            self.dmg = random.randint(1, random.randint(1,2*player))
             self.xp = self.dmg*self.hp
-            if self.hp > 5:                                                         #to add some flavor
+            if self.hp > player*5:
                 self.surname = self.attributes[0]
-            elif self.hp > 15:
+            elif self.hp > player*5:
                 self.surname = self.attributes[1]
             else:
                 self.surname = self.attributes[random.randint(2,4)]

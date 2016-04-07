@@ -1,13 +1,14 @@
 from .room import Room
+import random
 
 import os
 import pickle
 import sys
 
 ##########################################
-#Problems:                               #
+#  Problems:                             #
 #   When you level up, the xp is always 0#
-#   Some attack errors                   #
+#                                        #
 #                                        #
 ##########################################
 
@@ -16,9 +17,9 @@ class Player:
 
         self.game_instance = game_instance
         self.name = name
-        self.location = Room(self)                 #set the current location as a Room
 
         self.lvl = lvl                              #it's not default 1 for testing purposes
+        self.location = Room(self.lvl)                 #set the current location as a Room
         self.max_health = int(lvl*5)                #it's an int, for some reason
         self.health = self.max_health               #health changes value, max_health always stays the same
         self.dmg_mult = 0.5                         #some weird thing i thought of
@@ -44,7 +45,7 @@ class Player:
         print("%s, you just lost %i health" % (self.name,dmg))
 
     def move(self):
-        current_room = Room(self.name)
+        current_room = Room(self.lvl)
         self.location = current_room
 
 #used when taking inputs
@@ -155,6 +156,7 @@ class Player:
             except:
                 print("Error")
 
+
         action_words = action.split(' ')
         if action_words[0] == 'spendperk':  #here we split the spendperk #something
             try:
@@ -177,11 +179,12 @@ class Player:
                     print('Congrats, you just killed a DEMON, you gain 3 dmg')
                     self.dmg += 3
                 else:
+                    self.take_dmg(random.randint(1,enemy.dmg))
                     print('You have killed a %s %s' %(enemy.surname, enemy.name))
                 self.kill_count += 1            #counts the enemies killed
                 self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
-                self.check_lvl_up()             #check if the player has enough xp to lvl up
-                break
+                self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
+            break
         if self.health <= 0:
             print('The damned %s %s just killed you'%(enemy.surname, enemy.name))
             self.game_instance.shutdown()
@@ -189,10 +192,10 @@ class Player:
 
     #used to check if the player need to level up
     #it's called after gaining xp (killing enemies)
-    def check_lvl_up(self):
+    def check_lvl_up(self,xp):
         if self.xp >= self.lvl*10:
             self.lvl += 1
-            self.xp = 0     #this is a bit wrong
+            self.xp = 0
             self.perks += 1
             print('You just leveled up')
         else:
@@ -244,13 +247,14 @@ class Player:
     #the player gets hit for the target's dmg
     def hit(self,enemy):
         enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
-        if enemy.hp > 0 and enemy.dmg<7:
+        if enemy.hp > 0:
             self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
         if enemy.hp <= 0:
+            self.take_dmg(random.randint(1,enemy.dmg))
             print('You have killed a %s %s' %(enemy.surname, enemy.name))
             self.kill_count += 1            #counts the enemies killed
             self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
-            self.check_lvl_up()             #check if the player has enough xp to lvl up
+            self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
         if self.health <= 0:
             print('The damned %s %s just killed you with just one hit'%(enemy.surname, enemy.name))
             self.game_instance.shutdown()
