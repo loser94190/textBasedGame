@@ -19,9 +19,10 @@ def menu():
     input()
     clear = lambda: os.system('cls')
     clear()
-    print('1.New game')
+    print('\n1.New game')
     print('2.Load')
     print('3.Exit')
+
 
 if __name__ == '__main__':
     menu()

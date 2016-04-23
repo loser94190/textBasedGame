@@ -19,10 +19,12 @@ class Player:
         self.name = name
 
         self.lvl = lvl                              #it's not default 1 for testing purposes
-        self.location = Room(self.lvl)                 #set the current location as a Room
+        self.luck = 1
+        self.location = Room(self.lvl, self.luck)                 #set the current location as a Room
         self.max_health = int(lvl*5)                #it's an int, for some reason
         self.health = self.max_health               #health changes value, max_health always stays the same
-        self.dmg_mult = 0.5                         #some weird thing i thought of
+        self.dmg_mult = 0.5
+
         self.dmg = lvl*2*(1+self.dmg_mult)
         self.xp = 0                                 #xp starts from 0
         self.waited = 0
@@ -45,7 +47,7 @@ class Player:
         print("%s, you just lost %i health" % (self.name,dmg))
 
     def move(self):
-        current_room = Room(self.lvl)
+        current_room = Room(self.lvl, self.luck)
         self.location = current_room
 
 #used when taking inputs
@@ -153,8 +155,8 @@ class Player:
                     self.hit(self.location.enemies[3])
                     self.location.check_enemies()
                     return True
-            except:
-                print("Error")
+            except ImportError:
+                print('a')
 
 
         action_words = action.split(' ')
@@ -171,20 +173,28 @@ class Player:
     #   until either the player or the enemy is dead
     def attack(self,enemy):
         while self.health > 0:
-            enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
+            luck_dmg = enemy.enemy_take_dmg(self.dmg, self.luck)      #when your health is greater than 0, you deal dmg to an enemy
+            if luck_dmg > 0.7 * self.dmg:
+                print("You were lucky and hit the %s %s for %i points of dmg" %(enemy.surname, enemy.name, luck_dmg))
+            else:
+                print("You were not that lucky and hit the %s %s for %i points of dmg" %(enemy.surname, enemy.name, luck_dmg))
             if enemy.hp > 0:
                 self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
             if enemy.hp <= 0:
                 if enemy.name == 'DEMON':
                     print('Congrats, you just killed a DEMON, you gain 3 dmg')
                     self.dmg += 3
+                    self.kill_count += 1            #counts the enemies killed
+                    self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
+                    self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
+                    break
                 else:
                     self.take_dmg(random.randint(1,enemy.dmg))
                     print('You have killed a %s %s' %(enemy.surname, enemy.name))
-                self.kill_count += 1            #counts the enemies killed
-                self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
-                self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
-            break
+                    self.kill_count += 1            #counts the enemies killed
+                    self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
+                    self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
+                    break
         if self.health <= 0:
             print('The damned %s %s just killed you'%(enemy.surname, enemy.name))
             self.game_instance.shutdown()
@@ -218,6 +228,8 @@ class Player:
                 self.dmg = self.lvl*(1+self.dmg_mult)
                 print('\n\nYou gained 1 dmg multiplier')
                 self.perks -= 1
+            elif choice == 'luck':
+                self.luck += 2
             else:
                 return False
         else:
@@ -246,15 +258,26 @@ class Player:
     #it hits the target for the player's dmg
     #the player gets hit for the target's dmg
     def hit(self,enemy):
-        enemy.enemy_take_dmg(self.dmg)      #when your health is greater than 0, you deal dmg to an enemy
+        luck_dmg = enemy.enemy_take_dmg(self.dmg, self.luck)      #when your health is greater than 0, you deal dmg to an enemy
+        if luck_dmg > 0.7 * self.dmg:
+            print("You were lucky and hit the %s %s for %i points of dmg" %(enemy.surname, enemy.name, luck_dmg))
+        elif luck_dmg > self.dmg:
+            print("Thanks to your skill you hit the %s %s for %i points of dmg" %(enemy.surname, enemy.name, luck_dmg))
+        else:
+            print("You were not that lucky and hit the %s %s for %i points of dmg" %(enemy.surname, enemy.name, luck_dmg))
         if enemy.hp > 0:
             self.take_dmg(enemy.dmg)        #you only take dmg if the hp of the enemy is greater than 0
         if enemy.hp <= 0:
-            self.take_dmg(random.randint(1,enemy.dmg))
-            print('You have killed a %s %s' %(enemy.surname, enemy.name))
-            self.kill_count += 1            #counts the enemies killed
-            self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
-            self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
+            if enemy.name == 'DEMON':
+                print('Congrats, you just killed a DEMON, you gain 3 dmg')
+                self.dmg += 3
+                self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
+            else:
+                self.take_dmg(random.randint(1,enemy.dmg))
+                print('You have killed a %s %s' %(enemy.surname, enemy.name))
+                self.kill_count += 1            #counts the enemies killed
+                self.get_xp(enemy.give_xp())    #you gain xp by killing an enemy
+                self.check_lvl_up(enemy.give_xp())             #check if the player has enough xp to lvl up
         if self.health <= 0:
             print('The damned %s %s just killed you with just one hit'%(enemy.surname, enemy.name))
             self.game_instance.shutdown()
